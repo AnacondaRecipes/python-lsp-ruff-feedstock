@@ -47,7 +47,7 @@ about:
   license_file: LICENSE
   description: |
     python-lsp-ruff is a plugin for python-lsp-server that adds linting, code actions and formatting capabilities
-    that are provided by ruff, an extremely fast Python linter and formatter written in Rust.
+    that are provided by ruff, an extremely fast Python linter and formatter written in Rust
   dev_url: https://github.com/python-lsp/python-lsp-ruff
   doc_url: https://github.com/python-lsp/python-lsp-ruff/blob/main/README.md
 
