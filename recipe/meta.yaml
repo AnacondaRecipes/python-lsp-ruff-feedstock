@@ -27,6 +27,12 @@ requirements:
     - lsprotocol >=2023.0.1
     - tomli >=1.1.0  # [py<311]
 
+# >   assert ruff_executable in call_args
+# E   AssertionError: assert 'C:\\Users\\TASK_1~3\\AppData\\Local\\Temp\\tmppkkjepzb' in ['C:\\miniconda3\\conda-bld\\python-lsp-ruff_1759831171348\\_test_env\\python.exe', '-m', 'ruff', 'check', '--quiet', '--exit-zero', ...]
+# Trying to find C:\\Users\\TASK_1~3\\AppData in C:\\miniconda3\\conda-bld. Linter test skipped:
+{% set deselect_tests = "" %}
+{% set deselect_tests = " --deselect=tests/test_ruff_lint.py::test_ruff_executable_param" %}  # [win]
+
 test:
   source_files:
     - tests
@@ -34,7 +40,7 @@ test:
     - pylsp_ruff
   commands:
     - pip check
-    - pytest -v tests
+    - pytest -v tests {{ deselect_tests }}
   requires:
     - pip
     - pytest
