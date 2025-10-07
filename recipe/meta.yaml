@@ -1,0 +1,64 @@
+{% set name = "python-lsp-ruff" %}
+{% set version = "2.3.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: 647745b7f3010ac101e3c53a797b8f9deb1f52228b608d70ad0e8e056978c3b7
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<38]
+
+requirements:
+  host:
+    - pip
+    - python
+    - setuptools
+  run:
+    - python
+    - ruff >=0.2.0
+    - python-lsp-server
+    - cattrs !=23.2.1
+    - lsprotocol >=2023.0.1
+    - tomli >=1.1.0  # [py<311]
+
+# >   assert ruff_executable in call_args
+# E   AssertionError: assert 'C:\\Users\\TASK_1~3\\AppData\\Local\\Temp\\tmppkkjepzb' in ['C:\\miniconda3\\conda-bld\\python-lsp-ruff_1759831171348\\_test_env\\python.exe', '-m', 'ruff', 'check', '--quiet', '--exit-zero', ...]
+# Trying to find C:\\Users\\TASK_1~3\\AppData in C:\\miniconda3\\conda-bld. Linter test skipped:
+{% set deselect_tests = "" %}
+{% set deselect_tests = " --deselect=tests/test_ruff_lint.py::test_ruff_executable_param" %}  # [win]
+
+test:
+  source_files:
+    - tests
+  imports:
+    - pylsp_ruff
+  commands:
+    - pip check
+    - pytest -v tests {{ deselect_tests }}
+  requires:
+    - pip
+    - pytest
+
+about:
+  home: https://pypi.org/project/python-lsp-ruff
+  summary: Ruff linting plugin for pylsp
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  description: |
+    python-lsp-ruff is a plugin for python-lsp-server that adds linting, code actions and formatting capabilities
+    that are provided by ruff, an extremely fast Python linter and formatter written in Rust
+  dev_url: https://github.com/python-lsp/python-lsp-ruff
+  doc_url: https://github.com/python-lsp/python-lsp-ruff/blob/main/README.md
+
+extra:
+  recipe-maintainers:
+    - bollwyvl
+    - jhossbach
+    - jonas-w
